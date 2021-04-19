@@ -1,6 +1,5 @@
-const Employee = require("./lib/Employee");
+const Manager = require("./lib/Manager");
 
-// Initialize a new Employee object
-const employee = new Employee();
 
-//
+// TESTING!!!
+const manager = new Manager();
