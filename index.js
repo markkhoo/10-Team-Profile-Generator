@@ -44,14 +44,12 @@ class Application {
         .prompt(this.allQuestions)
         .then(responses => {
             responses.type = this.currentEmployee;
-
             this.listEmployees.push(responses);
-
             this.newEmployee();
         })
     }
 
-    newEmployee () {
+    newEmployee() {
         return inquirer
         .prompt({
             type: 'list',
@@ -61,8 +59,8 @@ class Application {
         })
         .then(result => {
             if(result.loop == 'none') {
-                //
-                console.log(this.listEmployees);
+                // End Result to make html string
+                this.generateLAS();
             } else {
                 this.currentEmployee = result.loop;
                 this.pickEmployees();
@@ -71,6 +69,12 @@ class Application {
         .catch((err) => {
             console.log(err);
         });
+    }
+
+    generateLAS() {
+
+
+        console.log(this.listEmployees);
     }
 }
 
