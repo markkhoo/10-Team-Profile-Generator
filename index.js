@@ -146,17 +146,23 @@ class Application {
             `
         );
 
-        console.log(this.listEmployees);
+        this.writeToFile();
+        // console.log(this.listEmployees);
     }
 
-    
+    writeToFile() {
+        fs.writeFile("./dist/index.html", this.htmlString, (err) => {
+            if (err) {
+                console.log("There is an error");
+                throw err;
+            };
+            console.log('html created in dist/');
+        });
+    }
 }
 
-
-
-
-
-
+// =======================
+// --- RUN APPLICATION ---
+// =======================
 const application = new Application();
-
 application.pickEmployees();
