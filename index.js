@@ -73,8 +73,7 @@ class Application {
     }
 
     generateLAS() {
-        this.htmlString.concat(
-            `<!DOCTYPE html>
+        this.htmlString += `<!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
@@ -88,63 +87,58 @@ class Application {
                     <h1 class="text-center">Company Team Profile</h1>
                 </header>
                 <div class="row p-2 bg-light">
-            `                
-        );
+            `
+        ;
 
         for (let i = 0; i < this.listEmployees.length; i++) {
 
-            this.htmlString.concat(
-                `
+            this.htmlString +=`
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">${this.listEmployees[i].name}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">${this.listEmployees[i].type}</h6>
                         <p class="card-text">ID: ${this.listEmployees[i].id}</p>
-                        <p class="card-text">Email: <a href="${this.listEmployees[i].email}" class="card-link">${this.listEmployees[i].email}</a></p>
+                        <p class="card-text">Email: <a href="mailto:${this.listEmployees[i].email}" class="card-link">${this.listEmployees[i].email}</a></p>
                 `
-            );
+            ;
 
             if (this.listEmployees[i].type == 'Manager') {
 
-                this.htmlString.concat(
-                    `
+                this.htmlString +=`
                         <p class="card-text">Office Number: ${this.listEmployees[i].officeNumber}</p>
                         </div>
                     </div>
                     `
-                );
+                ;
 
             } else if (this.listEmployees[i].type == 'Engineer') {
 
-                this.htmlString.concat(
-                    `
+                this.htmlString +=`
                         <p class="card-text">GitHub: <a href="https://github.com/${this.listEmployees[i].username}" class="card-link">${this.listEmployees[i].username}</a></p>
                         </div>
                     </div>
                     `
-                );
+                ;
 
             } else if (this.listEmployees[i].type == 'Intern') {
 
-                this.htmlString.concat(
-                    `
+                this.htmlString +=`
                         <p class="card-text">School: ${this.listEmployees[i].school}</p>
                         </div>
                     </div>
                     `
-                );
+                ;
 
             };
 
         };
 
-        this.htmlString.concat(
-            `
+        this.htmlString +=`
                 </div>
             </body>
             </html>
             `
-        );
+        ;
 
         this.writeToFile();
         // console.log(this.listEmployees);
