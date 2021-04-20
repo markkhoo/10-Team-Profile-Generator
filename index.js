@@ -4,7 +4,7 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 
-
+// Main Class to run the application
 class Application {
     constructor() {
         this.currentEmployee = 'Manager';
@@ -12,44 +12,40 @@ class Application {
         this.htmlString = ``;
     }
 
+    // This function creates a new Employee Class and compiles the questions for Inquirer
     pickEmployees() {
         if(this.currentEmployee == 'Manager') {
-
             this.generateEmployee = new Manager();
             this.allQuestions = this.generateEmployee.questions;
             this.allQuestions.push(this.generateEmployee.questionsEX);
-
             this.promptEmployees(this.allQuestions);
-
         } else if (this.currentEmployee == 'Engineer') {
-
             this.generateEmployee = new Engineer();
             this.allQuestions = this.generateEmployee.questions;
             this.allQuestions.push(this.generateEmployee.questionsEX);
-
             this.promptEmployees(this.allQuestions);
-
         } else if (this.currentEmployee == 'Intern') {
-
             this.generateEmployee = new Intern();
             this.allQuestions = this.generateEmployee.questions;
             this.allQuestions.push(this.generateEmployee.questionsEX);
-
             this.promptEmployees(this.allQuestions);
-
         }
     }
 
+    // This function provides the prompt in commandline for the user to input information
     promptEmployees() {
         return inquirer
         .prompt(this.allQuestions)
         .then(responses => {
+            // This adds the Employee type to the current object
             responses.type = this.currentEmployee;
+            // This pushes the current object into the array of Employee objects
             this.listEmployees.push(responses);
             this.newEmployee();
         })
     }
 
+    // This function prompts the user to add a new Employee
     newEmployee() {
         return inquirer
         .prompt({
@@ -59,10 +55,12 @@ class Application {
             name: 'loop',
         })
         .then(result => {
+            // Determines wether to make a new employee object or move on to next work
             if(result.loop == 'none') {
                 // End Result to make html string
                 this.generateLAS();
             } else {
+                // Go back to make new Employee object
                 this.currentEmployee = result.loop;
                 this.pickEmployees();
             }
@@ -72,7 +70,9 @@ class Application {
         });
     }
 
+    // This function generates the string to be written into and html file
     generateLAS() {
+        // HTML content right before employee cards are written
         this.htmlString += `<!DOCTYPE html>
             <html lang="en">
             <head>
@@ -90,8 +90,10 @@ class Application {
             `
         ;
 
+        // HTML content for the Employee Array of Objects
         for (let i = 0; i < this.listEmployees.length; i++) {
 
+            // HTML content shared for all Employees
             this.htmlString +=`
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
@@ -101,38 +103,34 @@ class Application {
                         <p class="card-text">Email: <a href="mailto:${this.listEmployees[i].email}" class="card-link">${this.listEmployees[i].email}</a></p>
                 `
             ;
-
+            // HTML content for Manager or Engineers or Interns
             if (this.listEmployees[i].type == 'Manager') {
-
+                // HTML content for Manager
                 this.htmlString +=`
                         <p class="card-text">Office Number: ${this.listEmployees[i].officeNumber}</p>
                         </div>
                     </div>
                     `
                 ;
-
             } else if (this.listEmployees[i].type == 'Engineer') {
-
+                // HTML content for Engineer
                 this.htmlString +=`
                         <p class="card-text">GitHub: <a href="https://github.com/${this.listEmployees[i].username}" class="card-link">${this.listEmployees[i].username}</a></p>
                         </div>
                     </div>
                     `
                 ;
-
             } else if (this.listEmployees[i].type == 'Intern') {
-
+                // HTML content for Interns
                 this.htmlString +=`
                         <p class="card-text">School: ${this.listEmployees[i].school}</p>
                         </div>
                     </div>
                     `
                 ;
-
             };
-
         };
-
+        // HTML content to close out
         this.htmlString +=`
                 </div>
             </body>
@@ -144,6 +142,7 @@ class Application {
         // console.log(this.listEmployees);
     }
 
+    // This function writes the HTML file
     writeToFile() {
         fs.writeFile("./dist/index.html", this.htmlString, (err) => {
             if (err) {
