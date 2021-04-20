@@ -17,23 +17,23 @@ class Application {
             this.generateEmployee = new Manager();
             this.allQuestions = this.generateEmployee.questions;
             this.allQuestions.push(this.generateEmployee.questionsEX);
-    
+
             this.promptEmployees(this.allQuestions);
-    
+
         } else if (this.currentEmployee == 'Engineer') {
 
             this.generateEmployee = new Engineer();
             this.allQuestions = this.generateEmployee.questions;
             this.allQuestions.push(this.generateEmployee.questionsEX);
-    
+
             this.promptEmployees(this.allQuestions);
-    
+
         } else if (this.currentEmployee == 'Intern') {
-    
+
             this.generateEmployee = new Intern();
             this.allQuestions = this.generateEmployee.questions;
             this.allQuestions.push(this.generateEmployee.questionsEX);
-    
+
             this.promptEmployees(this.allQuestions);
 
         }
@@ -43,9 +43,10 @@ class Application {
         return inquirer
         .prompt(this.allQuestions)
         .then(responses => {
-    
-            console.log(responses);
-    
+            responses.type = this.currentEmployee;
+
+            this.listEmployees.push(responses);
+
             this.newEmployee();
         })
     }
@@ -59,12 +60,16 @@ class Application {
             name: 'loop',
         })
         .then(result => {
-            if(result == 'none') {
-                console.log("END OF NEW EMPLOYEE");
+            if(result.loop == 'none') {
+                //
+                console.log(this.listEmployees);
             } else {
-                this.currentEmployee = result;
+                this.currentEmployee = result.loop;
                 this.pickEmployees();
             }
+        })
+        .catch((err) => {
+            console.log(err);
         });
     }
 }
