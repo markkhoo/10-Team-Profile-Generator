@@ -1,11 +1,10 @@
 const Intern = require('../lib/Intern');
 
 describe("Intern Class", () => {
-
-    
-    it("Placeholder TEST", () => {
-
-
-        expect().toBe();
+    it("getRole should return Intern", () => {
+        const testFunction = new Intern().role;
+        const testAnswer = 'Intern';
+        expect(testFunction).toBe(testAnswer);
     })
+
 })
