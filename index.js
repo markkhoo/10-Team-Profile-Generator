@@ -4,57 +4,76 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 
-var creationFlag = true;
-var currentEmployee = 'Manager';
 
-const listEmployees = [];
+class Application {
+    constructor() {
+        this.currentEmployee = 'Manager';
+        this.listEmployees = [];
+    }
 
-function newEmployee () {
-    inquirer
-    .prompt({
-        type: 'list',
-        message: 'Add new employee?',
-        choices: ['Engineer', 'Intern', 'none'],
-        name: 'loop',
-    })
-    .then(result => {
-        if(require == 'none') {
-            creationFlag = false;
-        } else {
-            currentEmployee = result;
+    pickEmployees() {
+        if(this.currentEmployee == 'Manager') {
+
+            this.generateEmployee = new Manager();
+            this.allQuestions = this.generateEmployee.questions;
+            this.allQuestions.push(this.generateEmployee.questionsEX);
+    
+            this.promptEmployees(this.allQuestions);
+    
+        } else if (this.currentEmployee == 'Engineer') {
+
+            this.generateEmployee = new Engineer();
+            this.allQuestions = this.generateEmployee.questions;
+            this.allQuestions.push(this.generateEmployee.questionsEX);
+    
+            this.promptEmployees(this.allQuestions);
+    
+        } else if (this.currentEmployee == 'Intern') {
+    
+            this.generateEmployee = new Intern();
+            this.allQuestions = this.generateEmployee.questions;
+            this.allQuestions.push(this.generateEmployee.questionsEX);
+    
+            this.promptEmployees(this.allQuestions);
+
         }
-    })
-};
+    }
 
-function pickEmployees() {
-    while(creationFlag) {
-        if(currentEmployee == 'Manager') {
-            const manager = new Manager();
-            const allQuestions = manager.questions;
-            allQuestions.push(manager.questionsMan);
-            inquirer
-            .prompt(allQuestions)
-            .then(responses => {
+    promptEmployees() {
+        return inquirer
+        .prompt(this.allQuestions)
+        .then(responses => {
     
-                console.log(responses);
-            })
-        } else if (currentEmployee == 'Engineer') {
+            console.log(responses);
     
-            newEmployee();
-        } else if (currentEmployee == 'Intern') {
-    
-            newEmployee();
-        } else {
-            creationFlag = false;
-        }
-    };
-};
+            this.newEmployee();
+        })
+    }
 
-pickEmployees();
+    newEmployee () {
+        return inquirer
+        .prompt({
+            type: 'list',
+            message: 'Add new employee?',
+            choices: ['Engineer', 'Intern', 'none'],
+            name: 'loop',
+        })
+        .then(result => {
+            if(result == 'none') {
+                console.log("END OF NEW EMPLOYEE");
+            } else {
+                this.currentEmployee = result;
+                this.pickEmployees();
+            }
+        });
+    }
+}
 
 
 
 
 
 
+const application = new Application();
 
+application.pickEmployees();
